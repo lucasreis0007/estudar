@@ -1,0 +1,6 @@
+const OPENMIND_I18N={
+"pt-BR":{dashboard:"DASHBOARD",ready:"Seu plano de estudos começa aqui.",todaysTraining:"Treino de hoje",startTraining:"COMEÇAR TREINO",streak:"Sequência",accuracy:"Acertos",studyTime:"Tempo",subjects:"Matérias",seeAll:"Ver todas",home:"Início",training:"Treino",progress:"Progresso",profile:"Perfil"},
+en:{dashboard:"DASHBOARD",ready:"Your study plan starts here.",todaysTraining:"Today's Training",startTraining:"START TRAINING",streak:"Streak",accuracy:"Accuracy",studyTime:"Study time",subjects:"Subjects",seeAll:"See all",home:"Home",training:"Training",progress:"Progress",profile:"Profile"}};
+function getLang(){return localStorage.getItem("openmind.language")||"pt-BR"}
+function applyLanguage(){const lang=getLang(),dict=OPENMIND_I18N[lang]||OPENMIND_I18N["pt-BR"];document.documentElement.lang=lang;document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.dataset.i18n;if(dict[k])el.textContent=dict[k]});const b=document.getElementById("languageBtn");if(b)b.textContent=lang==="en"?"EN":"PT"}
+document.addEventListener("DOMContentLoaded",()=>{applyLanguage();const b=document.getElementById("languageBtn");if(b)b.onclick=()=>{localStorage.setItem("openmind.language",getLang()==="en"?"pt-BR":"en");applyLanguage();if(window.renderDashboard)window.renderDashboard()}})
