@@ -1,1 +1,139 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/style.css"><title>OpenMind — Matéria</title></head><body><div class="app-shell"><header class="topbar"><div><div class="brand">OpenMind</div><div class="tagline">Learn. Practice. Evolve.</div></div></header><main class="content"><section class="hero-card"><span class="eyebrow">SUBJECT</span><h1 id="name">Matéria</h1><p id="desc">Basic · Intermediate · Advanced</p></section><section class="section"><h2>Conteúdo</h2><div class="subject-list"><div class="subject-card"><div><strong>Fundamentos</strong><small>Conceitos básicos</small></div><span>›</span></div><div class="subject-card"><div><strong>Intermediário</strong><small>Aplicação e cálculos</small></div><span>›</span></div><div class="subject-card"><div><strong>Difícil</strong><small>Problemas complexos</small></div><span>›</span></div></div></section></main><nav class="bottom-nav"><a href="../index.html">⌂<span>Início</span></a><a href="training.html">🎯<span>Treino</span></a><a class="active" href="subjects.html">📚<span>Matérias</span></a><a href="progress.html">📊<span>Progresso</span></a><a href="profile.html">👤<span>Perfil</span></a></nav></div><script src="../js/openmind-data.js"></script><script>const id=new URLSearchParams(location.search).get("id"),s=OPENMIND_SUBJECTS.find(x=>x.id===id);if(s){document.getElementById("name").textContent=s.namePt;document.getElementById("desc").textContent=s.nameEn+" • Básico • Intermediário • Difícil"}</script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../css/style.css">
+<title>OpenMind — Matéria</title>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <div class="brand">OpenMind</div>
+      <div class="tagline">Learn. Practice. Evolve.</div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="hero-card">
+      <span class="eyebrow">SUBJECT</span>
+      <h1 id="name">Matéria</h1>
+      <p id="desc">Basic · Intermediate · Advanced</p>
+      <a id="btnTreinar" class="primary-btn" href="training.html">🎯 TREINAR ESTA MATÉRIA</a>
+    </section>
+
+    <section class="section">
+      <h2 data-i18n="topics">Assuntos</h2>
+      <div id="topicos" class="subject-list">
+        <p class="carregando-add">Carregando...</p>
+      </div>
+
+      <button id="btnMostrarAddTopico" class="botao-adicionar" data-i18n="addTopic">+ Add Topic</button>
+
+      <form id="formAddTopico" class="form-add oculto-auth">
+        <h3 data-i18n="newTopic">Novo assunto</h3>
+        <label class="campo-add">
+          <span data-i18n="namePt">Português</span>
+          <input type="text" id="topicoNomePt" required>
+        </label>
+        <label class="campo-add">
+          <span data-i18n="nameEn">English</span>
+          <input type="text" id="topicoNomeEn" required>
+        </label>
+        <label class="campo-add">
+          <span data-i18n="difficultyLabel">Dificuldade inicial</span>
+          <select id="topicoDificuldade">
+            <option value="basic">🟢 Basic</option>
+            <option value="intermediate">🟡 Intermediate</option>
+            <option value="advanced">🔴 Advanced</option>
+          </select>
+        </label>
+        <div class="form-add-acoes">
+          <button type="button" id="btnCancelarAddTopico" class="botao-secundario" data-i18n="cancel">Cancelar</button>
+          <button type="submit" class="botao-primario-add" data-i18n="save">Salvar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="../index.html">⌂<span data-i18n="home">Início</span></a>
+    <a href="training.html">🎯<span data-i18n="training">Treino</span></a>
+    <a class="active" href="subjects.html">📚<span data-i18n="subjects">Matérias</span></a>
+    <a href="progress.html">📊<span data-i18n="progress">Progresso</span></a>
+    <a href="profile.html">👤<span data-i18n="profile">Perfil</span></a>
+  </nav>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script src="../js/firebase-init.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/openmind-data.js"></script>
+<script src="../js/subjects-service.js"></script>
+<script src="../js/language.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const subjectId = new URLSearchParams(location.search).get("id");
+
+    OPENMIND_protegerPagina(() => {
+        if (!subjectId) { window.location.href = "subjects.html"; return; }
+
+        OPENMIND_buscarMateria(subjectId).then(materia => {
+            if (!materia) { window.location.href = "subjects.html"; return; }
+
+            const lang = getLang();
+            document.getElementById("name").textContent = lang === "en" ? materia.nameEn : materia.namePt;
+            document.getElementById("desc").textContent = lang === "en" ? materia.namePt : materia.nameEn;
+            document.getElementById("btnTreinar").href = `training.html?materia=${subjectId}`;
+        });
+
+        renderizarTopicos();
+    });
+
+    function renderizarTopicos() {
+        OPENMIND_listarTopicos(subjectId).then(topicos => {
+            const lang = getLang();
+            const rotulos = { basic: "🟢 Basic", intermediate: "🟡 Intermediate", advanced: "🔴 Advanced" };
+
+            document.getElementById("topicos").innerHTML = topicos.length
+                ? topicos.map(t => `
+                    <div class="subject-card">
+                        <div>
+                            <strong>${lang === "en" ? t.nameEn : t.namePt}</strong>
+                            <small>${lang === "en" ? t.namePt : t.nameEn}</small>
+                        </div>
+                        <span class="pill-dificuldade pill-${t.difficulty || 'basic'}">${rotulos[t.difficulty] || rotulos.basic}</span>
+                    </div>
+                `).join("")
+                : `<p class="carregando-add">${lang === "en" ? "No topics added yet." : "Nenhum assunto cadastrado ainda."}</p>`;
+        });
+    }
+
+    const form = document.getElementById("formAddTopico");
+    const btnMostrar = document.getElementById("btnMostrarAddTopico");
+    const btnCancelar = document.getElementById("btnCancelarAddTopico");
+
+    btnMostrar.addEventListener("click", () => form.classList.remove("oculto-auth"));
+    btnCancelar.addEventListener("click", () => form.classList.add("oculto-auth"));
+
+    form.addEventListener("submit", evento => {
+        evento.preventDefault();
+        OPENMIND_adicionarTopico(subjectId, {
+            namePt: document.getElementById("topicoNomePt").value.trim(),
+            nameEn: document.getElementById("topicoNomeEn").value.trim(),
+            difficulty: document.getElementById("topicoDificuldade").value
+        }).then(() => {
+            form.reset();
+            form.classList.add("oculto-auth");
+            renderizarTopicos();
+        });
+    });
+});
+</script>
+</body>
+</html>
