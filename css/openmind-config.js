@@ -1,1 +1,0 @@
-window.OPENMIND_CONFIG={appName:"OpenMind",tagline:"Learn. Practice. Evolve.",dailyStudyMinutes:60,languages:["pt-BR","en"],studyModes:["pt-BR","en","mixed"],aiEnabled:false};
