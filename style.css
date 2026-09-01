@@ -1,0 +1,26 @@
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f7fb;color:#111827}body{padding-bottom:76px}.app-shell{max-width:900px;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;padding:22px 18px 12px;background:#fff}.brand{font-size:25px;font-weight:800;letter-spacing:-.6px}.tagline{font-size:12px;color:#6b7280;margin-top:2px}.icon-btn{border:1px solid #e5e7eb;background:#f9fafb;border-radius:12px;padding:9px 11px;font-weight:700}.content{padding:16px 16px 30px}.hero-card{background:#111827;color:#fff;border-radius:24px;padding:22px;box-shadow:0 10px 30px #11182718}.eyebrow{font-size:11px;font-weight:800;letter-spacing:1.2px;opacity:.7}.hero-card h1{font-size:29px;margin:8px 0}.hero-card p{color:#d1d5db;margin:0 0 20px}.training-card{background:#ffffff12;border:1px solid #ffffff18;border-radius:18px;padding:15px;display:flex;align-items:center;justify-content:space-between;gap:14px}.training-card strong{display:block;font-size:22px;margin-top:4px}.muted{color:#9ca3af;font-size:12px}.primary-btn{display:inline-block;background:#fff;color:#111827;text-decoration:none;border-radius:12px;padding:11px 13px;font-size:12px;font-weight:800;white-space:nowrap}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}.stat-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:15px}.stat-card span{display:block;color:#6b7280;font-size:12px}.stat-card strong{display:block;margin-top:5px;font-size:20px}.section{margin-top:24px}.section-head{display:flex;justify-content:space-between;align-items:center}.section h2{font-size:18px;margin:0}.section-head a{font-size:12px;text-decoration:none;color:#4b5563}.subject-list{display:grid;gap:10px;margin-top:10px}.subject-card{background:#fff;border:1px solid #e5e7eb;border-radius:17px;padding:15px;display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit}.subject-card strong{display:block}.subject-card small{color:#6b7280}.subject-card .arrow{font-size:20px;color:#9ca3af}.bottom-nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e5e7eb;height:68px;display:flex;justify-content:center;z-index:10}.bottom-nav a{width:20%;max-width:130px;text-align:center;text-decoration:none;color:#6b7280;font-size:17px;padding-top:9px}.bottom-nav span{display:block;font-size:10px;margin-top:3px}.bottom-nav a.active{color:#111827;font-weight:700}@media(min-width:700px){.content{padding-top:24px}.stats-grid{grid-template-columns:repeat(4,1fr)}.subject-list{grid-template-columns:repeat(2,1fr)}.bottom-nav{position:static;margin-top:10px;border:0}.bottom-nav a{padding:12px}.app-shell{padding-bottom:20px}}
+.oculto-auth{display:none}
+.form-auth{display:flex;flex-direction:column;gap:12px;margin-top:18px;text-align:left}
+.campo-auth{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#d1d5db}
+.campo-auth input{border:1px solid #ffffff30;background:#ffffff12;color:#fff;border-radius:10px;padding:11px;font-size:14px;font-family:inherit}
+.campo-auth input::placeholder{color:#9ca3af}
+.primary-btn-full{width:100%;text-align:center;border:none;cursor:pointer;font-size:13px;margin-top:4px}
+.erro-auth{color:#fca5a5;font-size:12px;min-height:14px}
+.link-auth{display:block;text-align:center;margin-top:16px;color:#d1d5db;font-size:12px;text-decoration:underline}
+.carregando-add{color:#6b7280;font-size:13px;padding:10px 0}
+.botao-adicionar{width:100%;background:#fff;border:2px dashed #cbd5e1;color:#475569;border-radius:16px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px}
+.botao-adicionar:hover{border-color:#111827;color:#111827}
+.form-add{margin-top:12px;background:#fff;border:1px solid #e5e7eb;border-radius:17px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.form-add h3{font-size:14px;margin:0 0 2px}
+.campo-add{display:flex;flex-direction:column;gap:5px;font-size:12px;color:#374151}
+.campo-add input,.campo-add textarea,.campo-add select{border:1px solid #d1d5db;border-radius:9px;padding:9px;font-size:13px;font-family:inherit}
+.form-add-acoes{display:flex;gap:10px;margin-top:4px}
+.botao-secundario,.botao-primario-add{flex:1;padding:11px;border-radius:9px;border:none;font-size:13px;font-weight:700;cursor:pointer}
+.botao-secundario{background:#f1f5f9;color:#475569}
+.botao-secundario:hover{background:#e2e8f0}
+.botao-primario-add{background:#111827;color:#fff}
+.botao-primario-add:hover{opacity:.9}
+.pill-dificuldade{font-size:10px;font-weight:800;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.pill-basic{background:#dcfce7;color:#166534}
+.pill-intermediate{background:#fef9c3;color:#854d0e}
+.pill-advanced{background:#fee2e2;color:#991b1b}
