@@ -1,4 +1,4 @@
-const CACHE = "openmind-v3";
+const CACHE = "openmind-v4";
 
 const ASSETS = [
     "index.html",
@@ -33,12 +33,37 @@ self.addEventListener("activate", e => e.waitUntil(
     ).then(() => self.clients.claim())
 ));
 
-self.addEventListener("fetch", e => e.respondWith(
-    caches.match(e.request).then(r =>
-        r || fetch(e.request).then(res => {
-            const copy = res.clone();
-            caches.open(CACHE).then(c => c.put(e.request, copy));
-            return res;
-        }).catch(() => caches.match("index.html"))
-    )
-));
+// Páginas HTML: sempre tenta a internet primeiro (assim uma atualização
+// publicada aparece na hora), só usa o cache se estiver offline. Isso
+// evita o problema de o app "travar" numa versão antiga do login.
+// Arquivos estáticos (css/js/img): cache primeiro, é seguro porque o
+// nome do CACHE muda a cada versão nova.
+self.addEventListener("fetch", e => {
+
+    const requisicao = e.request;
+    const ehPaginaHtml = requisicao.mode === "navigate" ||
+        (requisicao.headers.get("accept") || "").includes("text/html");
+
+    if (ehPaginaHtml) {
+        e.respondWith(
+            fetch(requisicao)
+                .then(res => {
+                    const copia = res.clone();
+                    caches.open(CACHE).then(c => c.put(requisicao, copia));
+                    return res;
+                })
+                .catch(() => caches.match(requisicao).then(r => r || caches.match("index.html")))
+        );
+        return;
+    }
+
+    e.respondWith(
+        caches.match(requisicao).then(r =>
+            r || fetch(requisicao).then(res => {
+                const copia = res.clone();
+                caches.open(CACHE).then(c => c.put(requisicao, copia));
+                return res;
+            })
+        )
+    );
+});
