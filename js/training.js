@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         perfilAtual = perfil;
 
         OPENMIND_garantirExerciciosSemeados()
-            .then(() => OPENMIND_buscarLoteExercicios(subjectId, 10))
+            .then(() => OPENMIND_buscarLoteExercicios(subjectId, 10, usuario.uid))
             .then(lote => {
                 exercicios = lote;
 
@@ -99,6 +99,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("painelCorrecao").classList.remove("oculto-auth");
 
         OPENMIND_registrarResposta(usuarioAtual.uid, { exercicio, respostaIndice: indiceEscolhido, correta, tempoMs });
+        OPENMIND_atualizarProgressoTopico(usuarioAtual.uid, {
+            subjectId: exercicio.subjectId,
+            topicId: exercicio.topicId,
+            difficulty: exercicio.difficulty,
+            correta: correta
+        });
     }
 
     function proximaQuestao() {

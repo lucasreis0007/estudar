@@ -47,7 +47,13 @@ const OPENMIND_I18N = {
         chooseSubject: "ESCOLHER MATÉRIA",
         next: "Próxima",
         trainingDone: "Treino concluído!",
-        backToDashboard: "VOLTAR AO DASHBOARD"
+        backToDashboard: "VOLTAR AO DASHBOARD",
+
+        notStarted: "Ainda não iniciado",
+        statusMastered: "🟢 Dominado",
+        statusDeveloping: "🟡 Em desenvolvimento",
+        statusNeedsReview: "🔴 Precisa revisar",
+        needsReviewToday: "Hoje precisamos revisar"
     },
     en: {
         dashboard: "DASHBOARD",
@@ -93,7 +99,13 @@ const OPENMIND_I18N = {
         chooseSubject: "CHOOSE SUBJECT",
         next: "Next",
         trainingDone: "Training complete!",
-        backToDashboard: "BACK TO DASHBOARD"
+        backToDashboard: "BACK TO DASHBOARD",
+
+        notStarted: "Not started yet",
+        statusMastered: "🟢 Mastered",
+        statusDeveloping: "🟡 Developing",
+        statusNeedsReview: "🔴 Needs review",
+        needsReviewToday: "Today we need to review"
     }
 };
 
@@ -124,7 +136,9 @@ document.addEventListener("DOMContentLoaded", () => {
         botaoIdioma.onclick = () => {
             localStorage.setItem("openmind.language", getLang() === "en" ? "pt-BR" : "en");
             applyLanguage();
-            if (window.renderDashboard) window.renderDashboard();
+            if (window.renderDashboard && window.OPENMIND_PERFIL) {
+                window.renderDashboard(window.OPENMIND_PERFIL, window.OPENMIND_USUARIO && window.OPENMIND_USUARIO.uid);
+            }
             if (window.OPENMIND_onLanguageChange) window.OPENMIND_onLanguageChange();
         };
     }

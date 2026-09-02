@@ -1,7 +1,7 @@
 // OpenMind — dashboard (index.html).
 // Protegido: só renderiza depois que o Firebase confirma o login.
 
-window.renderDashboard = function (perfil) {
+window.renderDashboard = function (perfil, uid) {
 
     const lang = getLang();
 
@@ -32,18 +32,23 @@ window.renderDashboard = function (perfil) {
     }
 
     const box = document.getElementById("subjectPreview");
-    if (box) {
-        OPENMIND_garantirMateriasSemeadas().then(OPENMIND_listarMaterias).then(materias => {
-            box.innerHTML = materias.slice(0, 4).map(s => `
-                <a class="subject-card" href="pages/subjects.html">
-                    <div>
-                        <strong>${lang === "en" ? s.nameEn : s.namePt}</strong>
-                        <small>${lang === "en" ? "Starting level: Basic" : "Nível inicial: Básico"}</small>
-                    </div>
-                    <span class="arrow">›</span>
-                </a>
-            `).join("");
-        });
+    if (box && uid) {
+        OPENMIND_garantirMateriasSemeadas()
+            .then(() => Promise.all([OPENMIND_listarMaterias(), OPENMIND_obterProgressoTodasMaterias(uid)]))
+            .then(([materias, progressoPorMateria]) => {
+                box.innerHTML = materias.slice(0, 4).map(s => {
+                    const status = OPENMIND_statusMateria(progressoPorMateria[s.id]);
+                    return `
+                    <a class="subject-card" href="pages/subjects.html">
+                        <div>
+                            <strong>${lang === "en" ? s.nameEn : s.namePt}</strong>
+                            <small>${OPENMIND_traduzirStatus(status.chave)}</small>
+                        </div>
+                        <span class="arrow">›</span>
+                    </a>
+                `;
+                }).join("");
+            });
     }
 };
 
@@ -51,6 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
     OPENMIND_protegerPagina((usuario, perfil) => {
         window.OPENMIND_USUARIO = usuario;
         window.OPENMIND_PERFIL = perfil;
-        renderDashboard(perfil);
+        renderDashboard(perfil, usuario.uid);
     });
 });

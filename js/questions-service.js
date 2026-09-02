@@ -25,7 +25,12 @@ function OPENMIND_garantirExerciciosSemeados() {
 // específica, ou de todas se subjectId for null). Descarta qualquer
 // documento que não tenha o formato esperado (proteção contra dado de
 // outro schema acabar misturado na mesma coleção).
-function OPENMIND_buscarLoteExercicios(subjectId, quantidade) {
+//
+// Quando um uid é passado, a seleção é ADAPTATIVA: para cada tópico,
+// perguntamos ao sistema adaptativo qual dificuldade o usuário deveria
+// receber agora e priorizamos esses exercícios — sem excluir os outros
+// níveis, pro lote nunca ficar vazio por falta de conteúdo.
+function OPENMIND_buscarLoteExercicios(subjectId, quantidade, uid) {
     const colecao = OPENMIND_DB.collection(OPENMIND_COLECAO_EXERCICIOS);
     const consulta = subjectId ? colecao.where("subjectId", "==", subjectId) : colecao;
 
@@ -33,8 +38,31 @@ function OPENMIND_buscarLoteExercicios(subjectId, quantidade) {
         const todos = snap.docs
             .map(function (doc) { return Object.assign({ id: doc.id }, doc.data()); })
             .filter(function (q) { return typeof q.correct === "number" && Array.isArray(q.optionsPt); });
-        OPENMIND_embaralhar(todos);
-        return todos.slice(0, quantidade || 10);
+
+        if (!uid) {
+            OPENMIND_embaralhar(todos);
+            return todos.slice(0, quantidade || 10);
+        }
+
+        const progressoPromessa = subjectId
+            ? OPENMIND_obterProgressoMateria(uid, subjectId)
+            : OPENMIND_obterProgressoTodasMaterias(uid).then(function (porMateria) {
+                return Object.keys(porMateria).reduce(function (lista, chave) { return lista.concat(porMateria[chave]); }, []);
+            });
+
+        return progressoPromessa.then(function (registros) {
+            const porTopico = {};
+            registros.forEach(function (r) { porTopico[r.topicId] = r; });
+
+            const pontuados = todos.map(function (exercicio) {
+                const recomendado = OPENMIND_nivelRecomendado(porTopico[exercicio.topicId]);
+                return { exercicio: exercicio, prioridade: exercicio.difficulty === recomendado ? 0 : 1, sorteio: Math.random() };
+            });
+
+            pontuados.sort(function (a, b) { return a.prioridade - b.prioridade || a.sorteio - b.sorteio; });
+
+            return pontuados.slice(0, quantidade || 10).map(function (item) { return item.exercicio; });
+        });
     });
 }
 
