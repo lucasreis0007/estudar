@@ -42,3 +42,5 @@
 .resultado-correcao{font-size:15px;font-weight:800;margin-bottom:6px}
 .explicacao-correcao{font-size:13px;color:#d1d5db;line-height:1.5;margin-bottom:14px}
 .resultado-resumo{color:#d1d5db;margin-bottom:18px}
+.barra-materia{height:6px;background:#00000012;border-radius:3px;overflow:hidden;margin-top:6px}
+.barra-materia-preenchimento{height:100%;background:#111827;border-radius:3px;transition:width .3s}
