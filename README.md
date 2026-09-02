@@ -1,21 +1,20 @@
-# OpenMind — Passo 04
+# OpenMind — Passo 05
 
 Projeto de estudos criado especificamente para o OpenMind.
 
 ## Neste passo
-- Login corrigido: fundo branco, texto escuro, abas separadas "Entrar" / "Criar conta"
-- Service Worker corrigido: páginas HTML sempre buscam a internet primeiro (nunca mais fica "preso" numa versão antiga)
-- Exercícios reais: banco inicial semeado no Firestore (coleção `questions`)
-- Tela de Treino funcional: pergunta, alternativas embaralhadas (a certa nunca fica sempre na mesma posição), correção com explicação, XP ao final
-- "Treinar esta matéria" (na tela de uma Matéria) já filtra os exercícios daquela matéria
-- Respostas registradas na coleção `answers`
+- Sistema adaptativo: cada resposta atualiza o progresso do usuário por tópico e nível (basic/intermediate/advanced), na coleção `topicProgress`
+- O treino agora prioriza o nível recomendado por tópico (domina o básico → sobe pro intermediário; erra muito → reforça o nível atual)
+- Matérias e Dashboard mostram status real (🟢 Dominado / 🟡 Em desenvolvimento / 🔴 Precisa revisar / Ainda não iniciado) e barra de progresso real, calculados do histórico de respostas — nada mais fixo
+- Bug corrigido: coleções revertidas para `questions`/`answers` (as que já têm regra liberada no seu Firestore)
 
 ## Ainda estático (próximos passos)
-- Sem sistema adaptativo ainda (exercícios aparecem em ordem aleatória, não por nível de domínio)
-- Progresso ainda mostra 0 fixo
+- Progresso ainda não tem tela dedicada com histórico (fica pra depois)
+- Sem Technical English / vocabulário ainda
 
 ## Próximos passos
 A cada etapa será gerado um novo ZIP. O conteúdo de IA não será implementado antes do Passo 12.
+
 
 
 
