@@ -1,4 +1,4 @@
-const CACHE = "openmind-v5";
+const CACHE = "openmind-v6";
 
 const ASSETS = [
     "index.html",
