@@ -18,10 +18,14 @@
   </header>
 
   <main class="content">
-    <section class="hero-card">
-      <span class="eyebrow" id="modoEyebrow">SIGN IN</span>
-      <h1 id="modoTitulo" data-i18n="loginTitle">Entrar</h1>
-      <p id="modoSubtitulo" data-i18n="loginSubtitle">Entre com seu e-mail e senha.</p>
+    <section class="auth-card">
+
+      <div class="auth-tabs">
+        <button type="button" id="tabLogin" class="auth-tab ativo" data-i18n="loginSubmit">Entrar</button>
+        <button type="button" id="tabCadastro" class="auth-tab" data-i18n="registerSubmit">Criar conta</button>
+      </div>
+
+      <p id="modoSubtitulo" class="auth-subtitulo" data-i18n="loginSubtitle">Entre com seu e-mail e senha.</p>
 
       <form id="formLogin" class="form-auth">
         <label class="campo-auth">
@@ -33,7 +37,7 @@
           <input type="password" id="loginSenha" required autocomplete="current-password" minlength="6">
         </label>
         <p class="erro-auth" id="erroLogin"></p>
-        <button type="submit" class="primary-btn primary-btn-full" data-i18n="loginSubmit">Entrar</button>
+        <button type="submit" class="primary-btn-full" data-i18n="loginSubmit">Entrar</button>
       </form>
 
       <form id="formCadastro" class="form-auth oculto-auth">
@@ -50,10 +54,9 @@
           <input type="password" id="cadConfirmar" required autocomplete="new-password" minlength="6">
         </label>
         <p class="erro-auth" id="erroCadastro"></p>
-        <button type="submit" class="primary-btn primary-btn-full" data-i18n="registerSubmit">Criar conta</button>
+        <button type="submit" class="primary-btn-full" data-i18n="registerSubmit">Criar conta</button>
       </form>
 
-      <a href="#" id="linkTrocar" class="link-auth" data-i18n="switchToRegister">Não tenho conta ainda</a>
     </section>
   </main>
 </div>

@@ -1,1 +1,70 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/style.css"><title>OpenMind — Treino</title></head><body><div class="app-shell"><header class="topbar"><div><div class="brand">OpenMind</div><div class="tagline">Learn. Practice. Evolve.</div></div></header><main class="content"><section class="hero-card"><span class="eyebrow">TODAY'S TRAINING</span><h1>60 min</h1><p>10 min Review · 20 min Basic/Intermediate · 20 min Advanced · 10 min Practical Challenge</p><a class="primary-btn" href="subjects.html">ESCOLHER MATÉRIA</a></section><section class="section"><h2>Plano inicial</h2><div class="subject-list"><div class="subject-card"><div><strong>Review</strong><small>Conteúdos anteriores</small></div><span>10 min</span></div><div class="subject-card"><div><strong>Concepts & Calculations</strong><small>Básico / Intermediário</small></div><span>20 min</span></div><div class="subject-card"><div><strong>Advanced Problems</strong><small>Problemas mais complexos</small></div><span>20 min</span></div><div class="subject-card"><div><strong>Practical Challenge</strong><small>Desafio de Eletromecânica</small></div><span>10 min</span></div></div></section></main><nav class="bottom-nav"><a href="../index.html">⌂<span>Início</span></a><a class="active" href="training.html">🎯<span>Treino</span></a><a href="subjects.html">📚<span>Matérias</span></a><a href="progress.html">📊<span>Progresso</span></a><a href="profile.html">👤<span>Perfil</span></a></nav></div><script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script><script src="../js/firebase-config.js"></script><script src="../js/firebase-init.js"></script><script src="../js/auth.js"></script><script src="../js/auth-guard.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../css/style.css">
+<title>OpenMind — Treino</title>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <div class="brand">OpenMind</div>
+      <div class="tagline" id="contadorQuestao">Carregando...</div>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <div class="barra-progresso-topo"><div class="barra-progresso-preenchimento" id="barraProgresso"></div></div>
+
+    <section id="viewSemExercicios" class="hero-card oculto-auth">
+      <span class="eyebrow">TRAINING</span>
+      <h1 data-i18n="noExercises">Ainda não há exercícios cadastrados.</h1>
+      <a class="primary-btn" href="subjects.html" data-i18n="chooseSubject">ESCOLHER MATÉRIA</a>
+    </section>
+
+    <section id="viewQuestao" class="hero-card oculto-auth">
+      <span class="pill-dificuldade" id="pillDificuldade"></span>
+      <h1 id="textoQuestao" class="pergunta-texto"></h1>
+
+      <div id="listaOpcoes" class="lista-opcoes"></div>
+
+      <div id="painelCorrecao" class="painel-correcao oculto-auth">
+        <p id="resultadoCorrecao" class="resultado-correcao"></p>
+        <p id="explicacaoCorrecao" class="explicacao-correcao"></p>
+        <button id="btnProxima" class="primary-btn-full" data-i18n="next">Próxima</button>
+      </div>
+    </section>
+
+    <section id="viewResultado" class="hero-card oculto-auth">
+      <span class="eyebrow">🏁</span>
+      <h1 data-i18n="trainingDone">Treino concluído!</h1>
+      <p id="resumoResultado" class="resultado-resumo"></p>
+      <a class="primary-btn" href="../index.html" data-i18n="backToDashboard">VOLTAR AO DASHBOARD</a>
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="../index.html">⌂<span data-i18n="home">Início</span></a>
+    <a class="active" href="training.html">🎯<span data-i18n="training">Treino</span></a>
+    <a href="subjects.html">📚<span data-i18n="subjects">Matérias</span></a>
+    <a href="progress.html">📊<span data-i18n="progress">Progresso</span></a>
+    <a href="profile.html">👤<span data-i18n="profile">Perfil</span></a>
+  </nav>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script src="../js/firebase-init.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/data/openmind-questions.js"></script>
+<script src="../js/questions-service.js"></script>
+<script src="../js/language.js"></script>
+<script src="../js/training.js"></script>
+</body>
+</html>
