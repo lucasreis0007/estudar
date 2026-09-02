@@ -66,26 +66,37 @@
 <script src="../js/openmind-config.js"></script>
 <script src="../js/openmind-data.js"></script>
 <script src="../js/subjects-service.js"></script>
+<script src="../js/adaptive-service.js"></script>
 <script src="../js/language.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-    OPENMIND_protegerPagina(() => {
+    let uidAtual = null;
+
+    OPENMIND_protegerPagina((usuario) => {
+        uidAtual = usuario.uid;
         OPENMIND_garantirMateriasSemeadas().then(renderizarMaterias);
     });
 
     function renderizarMaterias() {
-        OPENMIND_listarMaterias().then(materias => {
+        Promise.all([
+            OPENMIND_listarMaterias(),
+            OPENMIND_obterProgressoTodasMaterias(uidAtual)
+        ]).then(([materias, progressoPorMateria]) => {
             const lang = getLang();
-            document.getElementById("subjects").innerHTML = materias.map(m => `
+            document.getElementById("subjects").innerHTML = materias.map(m => {
+                const status = OPENMIND_statusMateria(progressoPorMateria[m.id]);
+                return `
                 <a class="subject-card" href="subject.html?id=${m.id}">
-                    <div>
+                    <div style="flex:1">
                         <strong>${lang === "en" ? m.nameEn : m.namePt}</strong>
-                        <small>${lang === "en" ? "Basic • Intermediate • Advanced" : "Básico • Intermediário • Difícil"}</small>
+                        <small>${OPENMIND_traduzirStatus(status.chave)}</small>
+                        <div class="barra-materia"><div class="barra-materia-preenchimento" style="width:${status.percentual}%"></div></div>
                     </div>
                     <span class="arrow">›</span>
                 </a>
-            `).join("");
+            `;
+            }).join("");
         });
     }
 

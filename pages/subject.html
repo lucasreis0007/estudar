@@ -74,13 +74,16 @@
 <script src="../js/auth.js"></script>
 <script src="../js/openmind-data.js"></script>
 <script src="../js/subjects-service.js"></script>
+<script src="../js/adaptive-service.js"></script>
 <script src="../js/language.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
     const subjectId = new URLSearchParams(location.search).get("id");
+    let uidAtual = null;
 
-    OPENMIND_protegerPagina(() => {
+    OPENMIND_protegerPagina((usuario) => {
+        uidAtual = usuario.uid;
         if (!subjectId) { window.location.href = "subjects.html"; return; }
 
         OPENMIND_buscarMateria(subjectId).then(materia => {
@@ -88,8 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const lang = getLang();
             document.getElementById("name").textContent = lang === "en" ? materia.nameEn : materia.namePt;
-            document.getElementById("desc").textContent = lang === "en" ? materia.namePt : materia.nameEn;
             document.getElementById("btnTreinar").href = `training.html?materia=${subjectId}`;
+
+            OPENMIND_obterProgressoMateria(uidAtual, subjectId).then(progresso => {
+                const status = OPENMIND_statusMateria(progresso);
+                document.getElementById("desc").textContent = OPENMIND_traduzirStatus(status.chave) + " · " + status.percentual + "%";
+            });
         });
 
         renderizarTopicos();
