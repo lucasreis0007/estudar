@@ -2,8 +2,8 @@
 // subjects-service.js: a UI nunca lê js/data/openmind-questions.js
 // diretamente — só chama estas funções.
 
-const OPENMIND_COLECAO_EXERCICIOS = "questionsV2";
-const OPENMIND_COLECAO_RESPOSTAS = "answersV2";
+const OPENMIND_COLECAO_EXERCICIOS = "questions";
+const OPENMIND_COLECAO_RESPOSTAS = "answers";
 
 // Verifica um documento conhecido (não só "a coleção está vazia") —
 // isso corrige sozinho o caso de já existir dado de um formato antigo
