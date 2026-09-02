@@ -1,1 +1,110 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/style.css"><title>OpenMind — Progresso</title></head><body><div class="app-shell"><header class="topbar"><div><div class="brand">OpenMind</div><div class="tagline">Learn. Practice. Evolve.</div></div></header><main class="content"><section class="section"><h2>Progresso</h2><div class="stats-grid"><article class="stat-card"><span>Overall Progress</span><strong>0%</strong></article><article class="stat-card"><span>Exercises</span><strong>0</strong></article><article class="stat-card"><span>XP</span><strong>0</strong></article><article class="stat-card"><span>Streak</span><strong>0 🔥</strong></article></div></section></main><nav class="bottom-nav"><a href="../index.html">⌂<span>Início</span></a><a href="training.html">🎯<span>Treino</span></a><a href="subjects.html">📚<span>Matérias</span></a><a class="active" href="progress.html">📊<span>Progresso</span></a><a href="profile.html">👤<span>Perfil</span></a></nav></div><script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script><script src="../js/firebase-config.js"></script><script src="../js/firebase-init.js"></script><script src="../js/auth.js"></script><script src="../js/auth-guard.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../css/style.css">
+<title>OpenMind — Progresso</title>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <div class="brand">OpenMind</div>
+      <div class="tagline">Learn. Practice. Evolve.</div>
+    </div>
+    <button id="languageBtn" class="icon-btn">PT</button>
+  </header>
+
+  <main class="content">
+    <section class="hero-card">
+      <span class="eyebrow" data-i18n="overallProgress">OVERALL PROGRESS</span>
+      <h1 id="progressoGeral">0%</h1>
+      <div class="barra-progresso-topo"><div class="barra-progresso-preenchimento" id="barraGeral"></div></div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card"><span data-i18n="exercises">Exercises</span><strong id="statExercicios">0</strong></article>
+      <article class="stat-card"><span data-i18n="accuracy">Accuracy</span><strong id="statAcertos">0%</strong></article>
+      <article class="stat-card"><span data-i18n="xp">XP</span><strong id="statXp">0</strong></article>
+      <article class="stat-card"><span data-i18n="streak">Streak</span><strong id="statStreak">0 🔥</strong></article>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2 data-i18n="subjects">Matérias</h2></div>
+      <div id="materiasProgresso" class="subject-list">
+        <p class="carregando-add">Carregando...</p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="../index.html">⌂<span data-i18n="home">Início</span></a>
+    <a href="training.html">🎯<span data-i18n="training">Treino</span></a>
+    <a href="subjects.html">📚<span data-i18n="subjects">Matérias</span></a>
+    <a class="active" href="progress.html">📊<span data-i18n="progress">Progresso</span></a>
+    <a href="profile.html">👤<span data-i18n="profile">Perfil</span></a>
+  </nav>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script src="../js/firebase-init.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/openmind-data.js"></script>
+<script src="../js/subjects-service.js"></script>
+<script src="../js/adaptive-service.js"></script>
+<script src="../js/language.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    OPENMIND_protegerPagina((usuario, perfil) => {
+
+        const taxa = perfil.exercisesDone > 0 ? Math.round((perfil.correctAnswers / perfil.exercisesDone) * 100) : 0;
+        document.getElementById("statExercicios").textContent = perfil.exercisesDone || 0;
+        document.getElementById("statAcertos").textContent = taxa + "%";
+        document.getElementById("statXp").textContent = perfil.xp || 0;
+        document.getElementById("statStreak").textContent = (perfil.streak || 0) + " 🔥";
+
+        OPENMIND_garantirMateriasSemeadas()
+            .then(() => Promise.all([OPENMIND_listarMaterias(), OPENMIND_obterProgressoTodasMaterias(usuario.uid)]))
+            .then(([materias, progressoPorMateria]) => {
+
+                const lang = getLang();
+
+                // Progresso geral: soma de acertos/respondidas de TODAS as
+                // matérias juntas (não é a média das %, é o total real).
+                let totalCertas = 0, totalRespondidas = 0;
+                Object.values(progressoPorMateria).forEach(topicos => {
+                    topicos.forEach(t => {
+                        ["basic", "intermediate", "advanced"].forEach(nivel => {
+                            totalRespondidas += t[nivel + "Total"] || 0;
+                            totalCertas += t[nivel + "Correct"] || 0;
+                        });
+                    });
+                });
+                const percentualGeral = totalRespondidas > 0 ? Math.round((totalCertas / totalRespondidas) * 100) : 0;
+                document.getElementById("progressoGeral").textContent = percentualGeral + "%";
+                document.getElementById("barraGeral").style.width = percentualGeral + "%";
+
+                document.getElementById("materiasProgresso").innerHTML = materias.map(m => {
+                    const status = OPENMIND_statusMateria(progressoPorMateria[m.id]);
+                    return `
+                    <a class="subject-card" href="subject.html?id=${m.id}">
+                        <div style="flex:1">
+                            <strong>${lang === "en" ? m.nameEn : m.namePt}</strong>
+                            <small>${OPENMIND_traduzirStatus(status.chave)} · ${status.percentual}%</small>
+                            <div class="barra-materia"><div class="barra-materia-preenchimento" style="width:${status.percentual}%"></div></div>
+                        </div>
+                        <span class="arrow">›</span>
+                    </a>
+                `;
+                }).join("");
+            });
+    });
+});
+</script>
+</body>
+</html>
