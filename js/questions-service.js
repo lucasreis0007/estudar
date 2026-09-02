@@ -86,3 +86,26 @@ function OPENMIND_embaralhar(lista) {
         const tmp = lista[i]; lista[i] = lista[j]; lista[j] = tmp;
     }
 }
+
+// Monta um treino só com exercícios dos tópicos que o usuário está com
+// desempenho fraco (< 60%) — usado pela "Revisão" do Dashboard/Treino.
+// O Firestore só aceita até 10 valores num "in", então limitamos aos 10
+// tópicos mais fracos.
+function OPENMIND_buscarLoteRevisao(uid, quantidade) {
+    return OPENMIND_topicosParaRevisar(uid).then(function (fracos) {
+        if (fracos.length === 0) return [];
+
+        const topicIds = fracos.slice(0, 10).map(function (f) { return f.topicId; });
+
+        return OPENMIND_DB.collection(OPENMIND_COLECAO_EXERCICIOS)
+            .where("topicId", "in", topicIds)
+            .get()
+            .then(function (snap) {
+                const todos = snap.docs
+                    .map(function (doc) { return Object.assign({ id: doc.id }, doc.data()); })
+                    .filter(function (q) { return typeof q.correct === "number" && Array.isArray(q.optionsPt); });
+                OPENMIND_embaralhar(todos);
+                return todos.slice(0, quantidade || 10);
+            });
+    });
+}

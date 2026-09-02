@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const subjectId = new URLSearchParams(location.search).get("materia");
+    const modoRevisao = new URLSearchParams(location.search).get("revisao") === "1";
 
     let usuarioAtual = null;
     let perfilAtual = null;
@@ -18,13 +19,23 @@ document.addEventListener("DOMContentLoaded", () => {
         perfilAtual = perfil;
 
         OPENMIND_garantirExerciciosSemeados()
-            .then(() => OPENMIND_buscarLoteExercicios(subjectId, 10, usuario.uid))
+            .then(() => modoRevisao
+                ? OPENMIND_buscarLoteRevisao(usuario.uid, 10)
+                : OPENMIND_buscarLoteExercicios(subjectId, 10, usuario.uid))
             .then(lote => {
                 exercicios = lote;
 
                 if (exercicios.length === 0) {
                     document.getElementById("viewSemExercicios").classList.remove("oculto-auth");
-                    document.getElementById("contadorQuestao").textContent = getLang() === "en" ? "No exercises" : "Nenhum exercício";
+                    const lang = getLang();
+                    if (modoRevisao) {
+                        document.getElementById("contadorQuestao").textContent = lang === "en" ? "Nothing to review" : "Nada pra revisar";
+                        document.querySelector("#viewSemExercicios h1").textContent = lang === "en"
+                            ? "🎉 Nothing to review right now — keep training!"
+                            : "🎉 Nada pra revisar agora — continue treinando!";
+                    } else {
+                        document.getElementById("contadorQuestao").textContent = lang === "en" ? "No exercises" : "Nenhum exercício";
+                    }
                     return;
                 }
 
@@ -40,7 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
         inicioQuestao = Date.now();
         const lang = getLang();
 
-        document.getElementById("contadorQuestao").textContent =
+        const prefixo = modoRevisao ? (lang === "en" ? "Review · " : "Revisão · ") : "";
+        document.getElementById("contadorQuestao").textContent = prefixo +
             (lang === "en" ? "Question " : "Questão ") + (indiceAtual + 1) + (lang === "en" ? " of " : " de ") + exercicios.length;
 
         document.getElementById("barraProgresso").style.width =

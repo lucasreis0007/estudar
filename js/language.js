@@ -56,7 +56,9 @@ const OPENMIND_I18N = {
         statusMastered: "🟢 Dominado",
         statusDeveloping: "🟡 Em desenvolvimento",
         statusNeedsReview: "🔴 Precisa revisar",
-        needsReviewToday: "Hoje precisamos revisar"
+        needsReviewToday: "Hoje precisamos revisar",
+        reviewNow: "REVISAR AGORA",
+        reviewCardText: "Você tem tópicos com desempenho fraco. Que tal revisar agora?"
     },
     en: {
         dashboard: "DASHBOARD",
@@ -111,7 +113,9 @@ const OPENMIND_I18N = {
         statusMastered: "🟢 Mastered",
         statusDeveloping: "🟡 Developing",
         statusNeedsReview: "🔴 Needs review",
-        needsReviewToday: "Today we need to review"
+        needsReviewToday: "Today we need to review",
+        reviewNow: "REVIEW NOW",
+        reviewCardText: "You have topics with weak performance. How about reviewing them now?"
     }
 };
 

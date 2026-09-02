@@ -102,3 +102,34 @@ function OPENMIND_traduzirStatus(chave) {
     const dict = OPENMIND_I18N[getLang()] || OPENMIND_I18N["pt-BR"];
     return dict[chave] || chave;
 }
+
+// Lista os tópicos que precisam de revisão (taxa de acerto abaixo de
+// 60%, considerando todos os níveis já tentados naquele tópico),
+// ordenados do pior pro melhor. Usado pelo Dashboard e pela sessão de
+// revisão focada no Treino.
+function OPENMIND_topicosParaRevisar(uid) {
+    return OPENMIND_DB.collection(OPENMIND_COLECAO_PROGRESSO)
+        .where("userId", "==", uid)
+        .get()
+        .then(function (snap) {
+            const resultado = [];
+
+            snap.docs.forEach(function (doc) {
+                const t = doc.data();
+                let certas = 0, respondidas = 0;
+                ["basic", "intermediate", "advanced"].forEach(function (nivel) {
+                    respondidas += t[nivel + "Total"] || 0;
+                    certas += t[nivel + "Correct"] || 0;
+                });
+                if (respondidas === 0) return;
+
+                const percentual = Math.round((certas / respondidas) * 100);
+                if (percentual < 60) {
+                    resultado.push({ topicId: t.topicId, subjectId: t.subjectId, percentual: percentual });
+                }
+            });
+
+            resultado.sort(function (a, b) { return a.percentual - b.percentual; });
+            return resultado;
+        });
+}

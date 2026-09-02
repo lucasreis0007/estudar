@@ -48,6 +48,22 @@ window.renderDashboard = function (perfil, uid) {
                     </a>
                 `;
                 }).join("");
+
+                const materiasPorId = {};
+                materias.forEach(m => { materiasPorId[m.id] = m; });
+
+                OPENMIND_topicosParaRevisar(uid).then(fracos => {
+                    if (fracos.length === 0) return;
+
+                    const nomesMaterias = [...new Set(fracos.map(f => f.subjectId))]
+                        .map(id => materiasPorId[id])
+                        .filter(Boolean)
+                        .map(m => lang === "en" ? m.nameEn : m.namePt);
+
+                    document.getElementById("textoRevisao").textContent =
+                        (lang === "en" ? "Weak spots in: " : "Pontos fracos em: ") + nomesMaterias.join(", ") + ".";
+                    document.getElementById("cardRevisao").classList.remove("oculto-auth");
+                });
             });
     }
 };
