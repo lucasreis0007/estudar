@@ -11,8 +11,9 @@ const OPENMIND_COLECAO_TOPICOS = "topics";
 // semeia com o conteúdo inicial (js/openmind-data.js). Depois disso o
 // Firestore é a única fonte da verdade.
 function OPENMIND_garantirMateriasSemeadas() {
-    return OPENMIND_DB.collection(OPENMIND_COLECAO_MATERIAS).limit(1).get().then(function (snap) {
-        if (!snap.empty) return;
+    const primeiraMateria = OPENMIND_SUBJECTS[0];
+    return OPENMIND_DB.collection(OPENMIND_COLECAO_MATERIAS).doc(primeiraMateria.id).get().then(function (doc) {
+        if (doc.exists && typeof doc.data().namePt === "string") return;
 
         const lote = OPENMIND_DB.batch();
 
@@ -46,7 +47,7 @@ function OPENMIND_listarMaterias() {
     return OPENMIND_DB.collection(OPENMIND_COLECAO_MATERIAS).get().then(function (snap) {
         return snap.docs
             .map(function (doc) { return Object.assign({ id: doc.id }, doc.data()); })
-            .filter(function (materia) { return materia.active !== false; });
+            .filter(function (materia) { return materia.active !== false && typeof materia.namePt === "string"; });
     });
 }
 
@@ -61,7 +62,9 @@ function OPENMIND_listarTopicos(subjectId) {
         .where("subjectId", "==", subjectId)
         .get()
         .then(function (snap) {
-            return snap.docs.map(function (doc) { return Object.assign({ id: doc.id }, doc.data()); });
+            return snap.docs
+                .map(function (doc) { return Object.assign({ id: doc.id }, doc.data()); })
+                .filter(function (topico) { return typeof topico.namePt === "string"; });
         });
 }
 

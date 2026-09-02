@@ -2,12 +2,15 @@
 // subjects-service.js: a UI nunca lê js/data/openmind-questions.js
 // diretamente — só chama estas funções.
 
-const OPENMIND_COLECAO_EXERCICIOS = "questions";
-const OPENMIND_COLECAO_RESPOSTAS = "answers";
+const OPENMIND_COLECAO_EXERCICIOS = "questionsV2";
+const OPENMIND_COLECAO_RESPOSTAS = "answersV2";
 
+// Verifica um documento conhecido (não só "a coleção está vazia") —
+// isso corrige sozinho o caso de já existir dado de um formato antigo
+// nessa mesma coleção (ex: de outro projeto usando o mesmo Firebase).
 function OPENMIND_garantirExerciciosSemeados() {
-    return OPENMIND_DB.collection(OPENMIND_COLECAO_EXERCICIOS).limit(1).get().then(function (snap) {
-        if (!snap.empty) return;
+    return OPENMIND_DB.collection(OPENMIND_COLECAO_EXERCICIOS).doc(OPENMIND_QUESTIONS[0].id).get().then(function (doc) {
+        if (doc.exists && typeof doc.data().correct === "number") return;
 
         const lote = OPENMIND_DB.batch();
         OPENMIND_QUESTIONS.forEach(function (exercicio) {
@@ -19,13 +22,17 @@ function OPENMIND_garantirExerciciosSemeados() {
 }
 
 // Busca um lote de exercícios para uma sessão de treino (de uma matéria
-// específica, ou de todas se subjectId for null).
+// específica, ou de todas se subjectId for null). Descarta qualquer
+// documento que não tenha o formato esperado (proteção contra dado de
+// outro schema acabar misturado na mesma coleção).
 function OPENMIND_buscarLoteExercicios(subjectId, quantidade) {
     const colecao = OPENMIND_DB.collection(OPENMIND_COLECAO_EXERCICIOS);
     const consulta = subjectId ? colecao.where("subjectId", "==", subjectId) : colecao;
 
     return consulta.get().then(function (snap) {
-        const todos = snap.docs.map(function (doc) { return Object.assign({ id: doc.id }, doc.data()); });
+        const todos = snap.docs
+            .map(function (doc) { return Object.assign({ id: doc.id }, doc.data()); })
+            .filter(function (q) { return typeof q.correct === "number" && Array.isArray(q.optionsPt); });
         OPENMIND_embaralhar(todos);
         return todos.slice(0, quantidade || 10);
     });
