@@ -41,7 +41,13 @@ const OPENMIND_I18N = {
         topics: "Assuntos",
         addTopic: "+ Add Topic",
         newTopic: "Novo assunto",
-        difficultyLabel: "Dificuldade inicial"
+        difficultyLabel: "Dificuldade inicial",
+
+        noExercises: "Ainda não há exercícios cadastrados.",
+        chooseSubject: "ESCOLHER MATÉRIA",
+        next: "Próxima",
+        trainingDone: "Treino concluído!",
+        backToDashboard: "VOLTAR AO DASHBOARD"
     },
     en: {
         dashboard: "DASHBOARD",
@@ -81,7 +87,13 @@ const OPENMIND_I18N = {
         topics: "Topics",
         addTopic: "+ Add Topic",
         newTopic: "New topic",
-        difficultyLabel: "Starting difficulty"
+        difficultyLabel: "Starting difficulty",
+
+        noExercises: "No exercises added yet.",
+        chooseSubject: "CHOOSE SUBJECT",
+        next: "Next",
+        trainingDone: "Training complete!",
+        backToDashboard: "BACK TO DASHBOARD"
     }
 };
 
