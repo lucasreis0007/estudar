@@ -1,18 +1,20 @@
-# OpenMind — Passo 06
+# OpenMind — Passo 07
 
 Projeto de estudos criado especificamente para o OpenMind.
 
 ## Neste passo
-- Tela de Progresso agora é real: progresso geral (soma de todas as matérias), exercícios feitos, taxa de acertos, XP e sequência — tudo vindo do perfil e do `topicProgress`
-- Lista de matérias na tela de Progresso com status (🟢🟡🔴) e barra de progresso reais, cada uma linkando pra tela da matéria
+- Revisão inteligente: tópicos com taxa de acerto abaixo de 60% entram automaticamente numa fila de revisão
+- Card vermelho no Dashboard ("Pontos fracos em: ...") aparece só quando existe algo pra revisar, com botão "REVISAR AGORA"
+- Sessão de revisão focada (`training.html?revisao=1`): mistura só exercícios dos tópicos fracos, de qualquer matéria
 
 ## Ainda estático (próximos passos)
-- Sem histórico dia-a-dia ainda (fica pra uma etapa de revisão/histórico)
 - Sem Technical English / vocabulário ainda
 - Sem simulado ainda
+- Sem conquistas/gamificação visual ainda
 
 ## Próximos passos
 A cada etapa será gerado um novo ZIP. O conteúdo de IA não será implementado antes do Passo 12.
+
 
 
 
