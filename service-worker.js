@@ -1,8 +1,10 @@
-const CACHE = "openmind-v15";
+const CACHE = "openmind-v16";
 
 const ASSETS = [
     "index.html",
     "manifest.json",
+    "img/icons/icon-192.png",
+    "img/icons/icon-512.png",
     "css/style.css",
     "js/openmind-config.js",
     "js/openmind-data.js",
