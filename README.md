@@ -1,30 +1,20 @@
-# OpenMind — Passo 08
+# OpenMind — Passo 09
 
 Projeto de estudos criado especificamente para o OpenMind.
 
 ## Neste passo
-- Technical English: banco de vocabulário técnico semeado no Firestore (`vocabulary`)
-- Tela dedicada (`pages/vocabulary.html`): flashcards com "Mostrar tradução", "Eu sabia" / "Não sabia", e repetição espaçada simples (`vocabularyProgress`)
-- Card "Technical English" no Dashboard com contagem real de palavras/dominadas/pra revisar
-- No Treino, depois de responder uma questão, aparece uma palavra técnica relacionada à matéria (Technical Vocabulary)
-
-## ⚠️ Ação necessária no Firebase
-Faltam regras para 2 coleções novas — adicione dentro do bloco `documents { ... }`, junto das outras:
-```
-match /vocabulary/{document=**} {
-  allow read, write: if request.auth != null;
-}
-match /vocabularyProgress/{document=**} {
-  allow read, write: if request.auth != null;
-}
-```
+- Simulado (`pages/simulator.html`): escolhe matéria (ou todas) e quantidade (10/20/30), mistura ~1/3 básico, 1/3 intermediário, 1/3 difícil
+- Diferente do Treino: **não corrige questão a questão** — só mostra o resultado completo no final (nota, acertos, tempo, desempenho por matéria)
+- Respostas do simulado contam pro XP, progresso adaptativo e histórico, igual ao Treino normal
+- Card "Simulado" no Dashboard
 
 ## Ainda estático (próximos passos)
-- Sem simulado ainda
 - Sem conquistas/gamificação visual ainda
+- Sem sincronização offline avançada ainda (PWA básico já funciona)
 
 ## Próximos passos
 A cada etapa será gerado um novo ZIP. O conteúdo de IA não será implementado antes do Passo 12.
+
 
 
 
