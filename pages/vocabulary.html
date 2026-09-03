@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../css/style.css">
+<title>OpenMind — Technical English</title>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <div class="brand">OpenMind</div>
+      <div class="tagline" data-i18n="technicalEnglish">Technical English</div>
+    </div>
+    <button id="languageBtn" class="icon-btn">PT</button>
+  </header>
+
+  <main class="content">
+
+    <section class="stats-grid">
+      <article class="stat-card"><span data-i18n="words">Words</span><strong id="vocabTotal">0</strong></article>
+      <article class="stat-card"><span data-i18n="mastered">Mastered</span><strong id="vocabMastered">0</strong></article>
+      <article class="stat-card"><span data-i18n="toReview">To review</span><strong id="vocabReview">0</strong></article>
+    </section>
+
+    <section id="viewPalavra" class="hero-card oculto-auth">
+      <span class="eyebrow" id="vocabCategoria">TECHNICAL ENGLISH</span>
+      <h1 id="vocabPalavra"></h1>
+
+      <button id="btnMostrarTraducao" class="primary-btn" data-i18n="showTranslation">SHOW TRANSLATION</button>
+
+      <div id="vocabTraducao" class="vocab-traducao oculto-auth">
+        <p id="vocabPortugues" class="vocab-pt"></p>
+        <p id="vocabExemploEn" class="vocab-exemplo"></p>
+        <p id="vocabExemploPt" class="vocab-exemplo"></p>
+
+        <div class="form-add-acoes">
+          <button id="btnNaoSabia" class="botao-secundario" data-i18n="didntKnow">❌ Não sabia</button>
+          <button id="btnSabia" class="botao-primario-add" data-i18n="knewIt">✅ Eu sabia</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="viewVazio" class="hero-card oculto-auth">
+      <span class="eyebrow">🎉</span>
+      <h1 data-i18n="allReviewed">Tudo revisado por hoje!</h1>
+      <a class="primary-btn" href="../index.html" data-i18n="backToDashboard">VOLTAR AO DASHBOARD</a>
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="../index.html">⌂<span data-i18n="home">Início</span></a>
+    <a href="training.html">🎯<span data-i18n="training">Treino</span></a>
+    <a href="subjects.html">📚<span data-i18n="subjects">Matérias</span></a>
+    <a href="progress.html">📊<span data-i18n="progress">Progresso</span></a>
+    <a href="profile.html">👤<span data-i18n="profile">Perfil</span></a>
+  </nav>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script src="../js/firebase-init.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/data/openmind-vocabulary.js"></script>
+<script src="../js/vocabulary-service.js"></script>
+<script src="../js/language.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    let uidAtual = null;
+    let fila = [];
+    let indiceAtual = 0;
+
+    OPENMIND_protegerPagina((usuario) => {
+        uidAtual = usuario.uid;
+
+        OPENMIND_garantirVocabularioSemeado()
+            .then(() => Promise.all([OPENMIND_listarVocabulario(), OPENMIND_obterProgressoVocabulario(uidAtual)]))
+            .then(([vocabulario, progresso]) => {
+
+                const mastered = Object.values(progresso).filter(p => p.mastery === "mastered").length;
+                document.getElementById("vocabTotal").textContent = vocabulario.length;
+                document.getElementById("vocabMastered").textContent = mastered;
+
+                fila = OPENMIND_vocabularioParaRevisar(vocabulario, progresso);
+                document.getElementById("vocabReview").textContent = fila.length;
+
+                if (fila.length === 0) {
+                    document.getElementById("viewVazio").classList.remove("oculto-auth");
+                    return;
+                }
+
+                document.getElementById("viewPalavra").classList.remove("oculto-auth");
+                renderizarPalavra();
+            });
+    });
+
+    function renderizarPalavra() {
+        const palavra = fila[indiceAtual];
+
+        document.getElementById("vocabCategoria").textContent = "TECHNICAL ENGLISH · " + (indiceAtual + 1) + "/" + fila.length;
+        document.getElementById("vocabPalavra").textContent = palavra.english;
+        document.getElementById("vocabPortugues").textContent = palavra.portuguese;
+        document.getElementById("vocabExemploEn").textContent = "🇺🇸 " + palavra.exampleEn;
+        document.getElementById("vocabExemploPt").textContent = "🇧🇷 " + palavra.examplePt;
+
+        document.getElementById("vocabTraducao").classList.add("oculto-auth");
+        document.getElementById("btnMostrarTraducao").classList.remove("oculto-auth");
+    }
+
+    document.getElementById("btnMostrarTraducao").addEventListener("click", () => {
+        document.getElementById("vocabTraducao").classList.remove("oculto-auth");
+        document.getElementById("btnMostrarTraducao").classList.add("oculto-auth");
+    });
+
+    function responder(sabia) {
+        const palavra = fila[indiceAtual];
+        OPENMIND_registrarRespostaVocabulario(uidAtual, palavra.id, sabia).then(() => {
+            indiceAtual++;
+            if (indiceAtual < fila.length) {
+                renderizarPalavra();
+            } else {
+                document.getElementById("viewPalavra").classList.add("oculto-auth");
+                document.getElementById("viewVazio").classList.remove("oculto-auth");
+            }
+        });
+    }
+
+    document.getElementById("btnSabia").addEventListener("click", () => responder(true));
+    document.getElementById("btnNaoSabia").addEventListener("click", () => responder(false));
+});
+</script>
+</body>
+</html>
