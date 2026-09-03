@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../css/style.css">
+<title>OpenMind — Entrar</title>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <div class="brand">OpenMind</div>
+      <div class="tagline">Learn. Practice. Evolve.</div>
+    </div>
+    <button id="languageBtn" class="icon-btn" aria-label="Idioma">PT</button>
+  </header>
+
+  <main class="content">
+    <section class="auth-card">
+
+      <div class="auth-tabs">
+        <button type="button" id="tabLogin" class="auth-tab ativo" data-i18n="loginSubmit">Entrar</button>
+        <button type="button" id="tabCadastro" class="auth-tab" data-i18n="registerSubmit">Criar conta</button>
+      </div>
+
+      <p id="modoSubtitulo" class="auth-subtitulo" data-i18n="loginSubtitle">Entre com seu e-mail e senha.</p>
+
+      <form id="formLogin" class="form-auth">
+        <label class="campo-auth">
+          <span data-i18n="emailLabel">E-mail</span>
+          <input type="email" id="loginEmail" required autocomplete="email">
+        </label>
+        <label class="campo-auth">
+          <span data-i18n="passwordLabel">Senha</span>
+          <input type="password" id="loginSenha" required autocomplete="current-password" minlength="6">
+        </label>
+        <p class="erro-auth" id="erroLogin"></p>
+        <button type="submit" class="primary-btn-full" data-i18n="loginSubmit">Entrar</button>
+      </form>
+
+      <form id="formCadastro" class="form-auth oculto-auth">
+        <label class="campo-auth">
+          <span data-i18n="emailLabel">E-mail</span>
+          <input type="email" id="cadEmail" required autocomplete="email">
+        </label>
+        <label class="campo-auth">
+          <span data-i18n="passwordLabel">Senha</span>
+          <input type="password" id="cadSenha" required autocomplete="new-password" minlength="6">
+        </label>
+        <label class="campo-auth">
+          <span data-i18n="confirmLabel">Confirmar senha</span>
+          <input type="password" id="cadConfirmar" required autocomplete="new-password" minlength="6">
+        </label>
+        <p class="erro-auth" id="erroCadastro"></p>
+        <button type="submit" class="primary-btn-full" data-i18n="registerSubmit">Criar conta</button>
+      </form>
+
+    </section>
+  </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script src="../js/firebase-init.js"></script>
+<script src="../js/language.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/login.js"></script>
+</body>
+</html>
