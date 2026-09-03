@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../css/style.css">
+<title>OpenMind — Simulado</title>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <div class="brand">OpenMind</div>
+      <div class="tagline" data-i18n="simulatedTest">SIMULATED TEST</div>
+    </div>
+    <button id="languageBtn" class="icon-btn">PT</button>
+  </header>
+
+  <main class="content">
+
+    <div class="barra-progresso-topo oculto-auth" id="barraProgressoWrap"><div class="barra-progresso-preenchimento" id="barraProgresso"></div></div>
+
+    <!-- CONFIGURAÇÃO -->
+    <section id="viewConfig" class="hero-card">
+      <span class="eyebrow" data-i18n="simulatedTest">SIMULATED TEST</span>
+      <h1 data-i18n="setupSimulated">Configure seu simulado</h1>
+
+      <label class="campo-add" style="margin-top:14px">
+        <span data-i18n="subjectLabel">Matéria</span>
+        <select id="selectMateria"><option value="" data-i18n="allSubjects">Todas as matérias</option></select>
+      </label>
+
+      <label class="campo-add" style="margin-top:10px">
+        <span data-i18n="quantityLabel">Quantidade de questões</span>
+        <select id="selectQuantidade">
+          <option value="10">10</option>
+          <option value="20" selected>20</option>
+          <option value="30">30</option>
+        </select>
+      </label>
+
+      <button id="btnIniciarSimulado" class="primary-btn primary-btn-full" style="margin-top:16px" data-i18n="startSimulated">INICIAR SIMULADO</button>
+    </section>
+
+    <!-- QUESTÃO (sem correção imediata) -->
+    <section id="viewQuestao" class="hero-card oculto-auth">
+      <span class="pill-dificuldade" id="pillDificuldade"></span>
+      <h1 id="textoQuestao" class="pergunta-texto"></h1>
+      <div id="listaOpcoes" class="lista-opcoes"></div>
+      <button id="btnProxima" class="primary-btn-full oculto-auth" data-i18n="next">Próxima</button>
+    </section>
+
+    <section id="viewSemExercicios" class="hero-card oculto-auth">
+      <span class="eyebrow">SIMULATED TEST</span>
+      <h1 data-i18n="noExercises">Ainda não há exercícios cadastrados.</h1>
+      <a class="primary-btn" href="subjects.html" data-i18n="chooseSubject">ESCOLHER MATÉRIA</a>
+    </section>
+
+    <!-- RESULTADO -->
+    <section id="viewResultado" class="hero-card oculto-auth">
+      <span class="eyebrow">🏁</span>
+      <h1 id="notaFinal"></h1>
+      <p id="resumoSimulado" class="resultado-resumo"></p>
+      <div id="desempenhoPorMateria" class="subject-list"></div>
+      <a class="primary-btn" href="../index.html" data-i18n="backToDashboard" style="margin-top:14px">VOLTAR AO DASHBOARD</a>
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="../index.html">⌂<span data-i18n="home">Início</span></a>
+    <a href="training.html">🎯<span data-i18n="training">Treino</span></a>
+    <a href="subjects.html">📚<span data-i18n="subjects">Matérias</span></a>
+    <a href="progress.html">📊<span data-i18n="progress">Progresso</span></a>
+    <a href="profile.html">👤<span data-i18n="profile">Perfil</span></a>
+  </nav>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script src="../js/firebase-init.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/openmind-data.js"></script>
+<script src="../js/subjects-service.js"></script>
+<script src="../js/data/openmind-questions.js"></script>
+<script src="../js/questions-service.js"></script>
+<script src="../js/adaptive-service.js"></script>
+<script src="../js/language.js"></script>
+<script src="../js/simulator.js"></script>
+</body>
+</html>
