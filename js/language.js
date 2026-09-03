@@ -60,6 +60,14 @@ const OPENMIND_I18N = {
         reviewNow: "REVISAR AGORA",
         reviewCardText: "Você tem tópicos com desempenho fraco. Que tal revisar agora?",
 
+        simulatedTest: "SIMULADO",
+        setupSimulated: "Configure seu simulado",
+        subjectLabel: "Matéria",
+        allSubjects: "Todas as matérias",
+        quantityLabel: "Quantidade de questões",
+        startSimulated: "INICIAR SIMULADO",
+        simulator: "Simulado",
+
         technicalEnglish: "Technical English",
         words: "Palavras",
         mastered: "Dominadas",
@@ -125,6 +133,14 @@ const OPENMIND_I18N = {
         needsReviewToday: "Today we need to review",
         reviewNow: "REVIEW NOW",
         reviewCardText: "You have topics with weak performance. How about reviewing them now?",
+
+        simulatedTest: "SIMULATED TEST",
+        setupSimulated: "Set up your simulated test",
+        subjectLabel: "Subject",
+        allSubjects: "All subjects",
+        quantityLabel: "Number of questions",
+        startSimulated: "START TEST",
+        simulator: "Simulated Test",
 
         technicalEnglish: "Technical English",
         words: "Words",

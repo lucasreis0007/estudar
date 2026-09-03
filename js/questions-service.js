@@ -87,6 +87,47 @@ function OPENMIND_embaralhar(lista) {
     }
 }
 
+// Monta um SIMULADO: mistura de dificuldades (aprox. 1/3 basic, 1/3
+// intermediate, 1/3 advanced), de uma matéria específica ou de todas.
+// Diferente do treino, o simulado não corrige questão a questão — só
+// no final (ver pages/simulator.html).
+function OPENMIND_buscarLoteSimulado(subjectId, quantidade) {
+    const colecao = OPENMIND_DB.collection(OPENMIND_COLECAO_EXERCICIOS);
+    const consulta = subjectId ? colecao.where("subjectId", "==", subjectId) : colecao;
+
+    return consulta.get().then(function (snap) {
+        const todos = snap.docs
+            .map(function (doc) { return Object.assign({ id: doc.id }, doc.data()); })
+            .filter(function (q) { return typeof q.correct === "number" && Array.isArray(q.optionsPt); });
+
+        const porNivel = { basic: [], intermediate: [], advanced: [] };
+        todos.forEach(function (q) {
+            if (porNivel[q.difficulty]) porNivel[q.difficulty].push(q);
+        });
+        OPENMIND_embaralhar(porNivel.basic);
+        OPENMIND_embaralhar(porNivel.intermediate);
+        OPENMIND_embaralhar(porNivel.advanced);
+
+        const porParte = Math.ceil((quantidade || 10) / 3);
+        let selecionadas = porNivel.basic.slice(0, porParte)
+            .concat(porNivel.intermediate.slice(0, porParte))
+            .concat(porNivel.advanced.slice(0, porParte));
+
+        // Se algum nível não tiver questões suficientes, completa com o
+        // que sobrar dos outros (pra não entregar um simulado menor que
+        // o pedido, quando dá pra evitar).
+        if (selecionadas.length < (quantidade || 10)) {
+            const usadas = new Set(selecionadas.map(function (q) { return q.id; }));
+            const resto = todos.filter(function (q) { return !usadas.has(q.id); });
+            OPENMIND_embaralhar(resto);
+            selecionadas = selecionadas.concat(resto.slice(0, (quantidade || 10) - selecionadas.length));
+        }
+
+        OPENMIND_embaralhar(selecionadas);
+        return selecionadas.slice(0, quantidade || 10);
+    });
+}
+
 // Monta um treino só com exercícios dos tópicos que o usuário está com
 // desempenho fraco (< 60%) — usado pela "Revisão" do Dashboard/Treino.
 // O Firestore só aceita até 10 valores num "in", então limitamos aos 10
