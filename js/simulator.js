@@ -146,6 +146,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span>${percentual}%</span>
                 </div>`;
             }).join("");
+
+            document.getElementById("viewDesempenho").classList.remove("oculto-auth");
         });
 
         // Atualiza XP/exercícios/tempo no perfil, igual ao Treino.
