@@ -1,4 +1,4 @@
-const CACHE = "openmind-v10";
+const CACHE = "openmind-v11";
 
 const ASSETS = [
     "index.html",
@@ -9,7 +9,9 @@ const ASSETS = [
     "js/subjects-service.js",
     "js/adaptive-service.js",
     "js/data/openmind-questions.js",
+    "js/data/openmind-vocabulary.js",
     "js/questions-service.js",
+    "js/vocabulary-service.js",
     "js/training.js",
     "js/language.js",
     "js/dashboard.js",
@@ -24,7 +26,8 @@ const ASSETS = [
     "pages/subject.html",
     "pages/training.html",
     "pages/progress.html",
-    "pages/profile.html"
+    "pages/profile.html",
+    "pages/vocabulary.html"
 ];
 
 self.addEventListener("install", e => e.waitUntil(
