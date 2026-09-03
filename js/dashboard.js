@@ -66,6 +66,19 @@ window.renderDashboard = function (perfil, uid) {
                 });
             });
     }
+
+    const vocabResumo = document.getElementById("vocabResumoDashboard");
+    if (vocabResumo && uid) {
+        OPENMIND_garantirVocabularioSemeado()
+            .then(() => Promise.all([OPENMIND_listarVocabulario(), OPENMIND_obterProgressoVocabulario(uid)]))
+            .then(([vocabulario, progresso]) => {
+                const mastered = Object.values(progresso).filter(p => p.mastery === "mastered").length;
+                const paraRevisar = OPENMIND_vocabularioParaRevisar(vocabulario, progresso).length;
+                vocabResumo.textContent = lang === "en"
+                    ? `${vocabulario.length} words · ${mastered} mastered · ${paraRevisar} to review`
+                    : `${vocabulario.length} palavras · ${mastered} dominadas · ${paraRevisar} pra revisar`;
+            });
+    }
 };
 
 document.addEventListener("DOMContentLoaded", () => {

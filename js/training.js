@@ -110,6 +110,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("explicacaoCorrecao").textContent = lang === "en" ? exercicio.explanationEn : exercicio.explanationPt;
         document.getElementById("painelCorrecao").classList.remove("oculto-auth");
 
+        mostrarVocabularioRelacionado(exercicio.subjectId);
+
         OPENMIND_registrarResposta(usuarioAtual.uid, { exercicio, respostaIndice: indiceEscolhido, correta, tempoMs });
         OPENMIND_atualizarProgressoTopico(usuarioAtual.uid, {
             subjectId: exercicio.subjectId,
@@ -117,6 +119,19 @@ document.addEventListener("DOMContentLoaded", () => {
             difficulty: exercicio.difficulty,
             correta: correta
         });
+    }
+
+    function mostrarVocabularioRelacionado(subjectId) {
+        const bloco = document.getElementById("vocabRelacionado");
+        if (!window.OPENMIND_VOCABULARY) { bloco.classList.add("oculto-auth"); return; }
+
+        const candidatas = OPENMIND_VOCABULARY.filter(v => v.category === subjectId);
+        if (candidatas.length === 0) { bloco.classList.add("oculto-auth"); return; }
+
+        const palavra = candidatas[Math.floor(Math.random() * candidatas.length)];
+        document.getElementById("vocabRelacionadoEn").textContent = palavra.english;
+        document.getElementById("vocabRelacionadoPt").textContent = palavra.portuguese;
+        bloco.classList.remove("oculto-auth");
     }
 
     function proximaQuestao() {

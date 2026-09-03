@@ -58,7 +58,16 @@ const OPENMIND_I18N = {
         statusNeedsReview: "🔴 Precisa revisar",
         needsReviewToday: "Hoje precisamos revisar",
         reviewNow: "REVISAR AGORA",
-        reviewCardText: "Você tem tópicos com desempenho fraco. Que tal revisar agora?"
+        reviewCardText: "Você tem tópicos com desempenho fraco. Que tal revisar agora?",
+
+        technicalEnglish: "Technical English",
+        words: "Palavras",
+        mastered: "Dominadas",
+        toReview: "Pra revisar",
+        showTranslation: "MOSTRAR TRADUÇÃO",
+        didntKnow: "❌ Não sabia",
+        knewIt: "✅ Eu sabia",
+        allReviewed: "Tudo revisado por hoje!"
     },
     en: {
         dashboard: "DASHBOARD",
@@ -115,7 +124,16 @@ const OPENMIND_I18N = {
         statusNeedsReview: "🔴 Needs review",
         needsReviewToday: "Today we need to review",
         reviewNow: "REVIEW NOW",
-        reviewCardText: "You have topics with weak performance. How about reviewing them now?"
+        reviewCardText: "You have topics with weak performance. How about reviewing them now?",
+
+        technicalEnglish: "Technical English",
+        words: "Words",
+        mastered: "Mastered",
+        toReview: "To review",
+        showTranslation: "SHOW TRANSLATION",
+        didntKnow: "❌ Didn't know",
+        knewIt: "✅ I knew it",
+        allReviewed: "All reviewed for today!"
     }
 };
 
