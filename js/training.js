@@ -153,17 +153,34 @@ document.addEventListener("DOMContentLoaded", () => {
         const duracaoMin = Math.max(1, Math.round((Date.now() - inicioSessao) / 60000));
         const lang = getLang();
 
-        OPENMIND_salvarPerfil(usuarioAtual.uid, {
+        const novoXp = (perfilAtual.xp || 0) + xpGanho;
+        const sequencia = OPENMIND_calcularNovaSequencia(perfilAtual);
+        const conquistasAntes = OPENMIND_conquistasDesbloqueadas(perfilAtual);
+
+        const perfilAtualizado = Object.assign({}, perfilAtual, {
             exercisesDone: (perfilAtual.exercisesDone || 0) + total,
             correctAnswers: (perfilAtual.correctAnswers || 0) + acertos,
-            xp: (perfilAtual.xp || 0) + xpGanho,
-            totalStudyTime: (perfilAtual.totalStudyTime || 0) + duracaoMin
+            xp: novoXp,
+            level: OPENMIND_calcularNivel(novoXp),
+            totalStudyTime: (perfilAtual.totalStudyTime || 0) + duracaoMin,
+            streak: sequencia.streak,
+            lastStudyDate: sequencia.lastStudyDate
         });
 
-        document.getElementById("resumoResultado").textContent = lang === "en"
+        OPENMIND_salvarPerfil(usuarioAtual.uid, perfilAtualizado);
+
+        const conquistasDepois = OPENMIND_conquistasDesbloqueadas(perfilAtualizado);
+        const novasConquistas = conquistasDepois.filter(c => !conquistasAntes.some(a => a.id === c.id));
+
+        let texto = lang === "en"
             ? `You got ${acertos} of ${total} questions right. +${xpGanho} XP`
             : `Você acertou ${acertos} de ${total} questões. +${xpGanho} XP`;
 
+        if (novasConquistas.length > 0) {
+            texto += " — " + novasConquistas.map(c => c.icone + " " + (lang === "en" ? c.nameEn : c.namePt)).join(" · ");
+        }
+
+        document.getElementById("resumoResultado").textContent = texto;
         document.getElementById("viewResultado").classList.remove("oculto-auth");
     }
 });

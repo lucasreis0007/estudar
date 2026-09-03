@@ -150,14 +150,20 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("viewDesempenho").classList.remove("oculto-auth");
         });
 
-        // Atualiza XP/exercícios/tempo no perfil, igual ao Treino.
+        // Atualiza XP/exercícios/tempo/sequência/nível no perfil, igual ao Treino.
         OPENMIND_carregarPerfil(usuarioAtual.uid).then(perfil => {
-            OPENMIND_salvarPerfil(usuarioAtual.uid, {
+            const novoXp = (perfil.xp || 0) + acertos * 10;
+            const sequencia = OPENMIND_calcularNovaSequencia(perfil);
+
+            OPENMIND_salvarPerfil(usuarioAtual.uid, Object.assign({}, perfil, {
                 exercisesDone: (perfil.exercisesDone || 0) + total,
                 correctAnswers: (perfil.correctAnswers || 0) + acertos,
-                xp: (perfil.xp || 0) + acertos * 10,
-                totalStudyTime: (perfil.totalStudyTime || 0) + duracaoMin
-            });
+                xp: novoXp,
+                level: OPENMIND_calcularNivel(novoXp),
+                totalStudyTime: (perfil.totalStudyTime || 0) + duracaoMin,
+                streak: sequencia.streak,
+                lastStudyDate: sequencia.lastStudyDate
+            }));
         });
 
         // Registra cada resposta e o progresso adaptativo, igual ao Treino.

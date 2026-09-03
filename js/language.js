@@ -67,6 +67,8 @@ const OPENMIND_I18N = {
         quantityLabel: "Quantidade de questões",
         startSimulated: "INICIAR SIMULADO",
         simulator: "Simulado",
+        levelLabel: "Nível",
+        achievements: "Conquistas",
 
         technicalEnglish: "Technical English",
         words: "Palavras",
@@ -141,6 +143,8 @@ const OPENMIND_I18N = {
         quantityLabel: "Number of questions",
         startSimulated: "START TEST",
         simulator: "Simulated Test",
+        levelLabel: "Level",
+        achievements: "Achievements",
 
         technicalEnglish: "Technical English",
         words: "Words",
