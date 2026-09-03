@@ -20,17 +20,25 @@
     <section class="hero-card">
       <span class="eyebrow">PROFILE</span>
       <h1 id="perfilNome">Seu perfil</h1>
-      <p id="perfilResumo">Idioma: Português · Modo: Eletromecânica</p>
+      <p id="perfilResumo">Idioma: Português</p>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card"><span data-i18n="levelLabel">Nível</span><strong id="perfilNivel">1</strong></article>
+      <article class="stat-card"><span>XP</span><strong id="perfilXp">0</strong></article>
+      <article class="stat-card"><span data-i18n="streak">Sequência</span><strong id="perfilStreak">0 🔥</strong></article>
+      <article class="stat-card"><span data-i18n="exercises">Exercícios</span><strong id="perfilExercicios">0</strong></article>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2 data-i18n="achievements">Conquistas</h2></div>
+      <div id="listaConquistas" class="conquistas-grid"></div>
     </section>
 
     <section class="section">
       <div class="subject-list">
         <div class="subject-card">
           <div><strong>Language / Idioma</strong><small>Português / English</small></div>
-          <span>›</span>
-        </div>
-        <div class="subject-card">
-          <div><strong>Study Mode</strong><small>Eletromecânica / Technical English / Mixed</small></div>
           <span>›</span>
         </div>
         <button id="btnSair" class="subject-card" style="border:none;width:100%;cursor:pointer;">
@@ -56,14 +64,34 @@
 <script src="../js/firebase-config.js"></script>
 <script src="../js/firebase-init.js"></script>
 <script src="../js/auth.js"></script>
+<script src="../js/gamification-service.js"></script>
 <script src="../js/language.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     OPENMIND_protegerPagina((usuario, perfil) => {
         const lang = getLang();
+
         document.getElementById("perfilNome").textContent = perfil.name || usuario.email;
         document.getElementById("perfilResumo").textContent =
             (lang === "en" ? "Language: " : "Idioma: ") + (perfil.language === "en" ? "English" : "Português");
+
+        document.getElementById("perfilNivel").textContent = OPENMIND_calcularNivel(perfil.xp);
+        document.getElementById("perfilXp").textContent = perfil.xp || 0;
+        document.getElementById("perfilStreak").textContent = (perfil.streak || 0) + " 🔥";
+        document.getElementById("perfilExercicios").textContent = perfil.exercisesDone || 0;
+
+        const desbloqueadas = OPENMIND_conquistasDesbloqueadas(perfil);
+        const idsDesbloqueadas = new Set(desbloqueadas.map(c => c.id));
+
+        document.getElementById("listaConquistas").innerHTML = OPENMIND_CONQUISTAS.map(c => {
+            const ok = idsDesbloqueadas.has(c.id);
+            const nome = lang === "en" ? c.nameEn : c.namePt;
+            return `
+            <div class="conquista-card ${ok ? "desbloqueada" : "bloqueada"}">
+                <span class="conquista-icone">${c.icone}</span>
+                <small>${nome}</small>
+            </div>`;
+        }).join("");
     });
 
     document.getElementById("btnSair").addEventListener("click", () => OPENMIND_sair());
