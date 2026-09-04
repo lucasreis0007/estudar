@@ -1,25 +1,38 @@
-# OpenMind — Passo 11
+# OpenMind — Passo 12
 
-Projeto de estudos criado especificamente para o OpenMind — auditoria geral e polimento antes da IA (Passo 12).
+Projeto de estudos criado especificamente para o OpenMind.
 
-## O que foi auditado (e corrigido)
-- ✅ **Bug real encontrado e corrigido**: `manifest.json` apontava pra ícones (`img/icons/icon-192.png` e `icon-512.png`) que não existiam — quebrava a instalação do PWA. Ícones placeholder criados.
-- ✅ Toda chave `data-i18n` usada no HTML tem tradução pt-BR e en correspondente (nenhuma faltando)
-- ✅ Todo `subjectId`/`topicId` usado nas perguntas e no vocabulário bate com uma matéria/assunto real
-- ✅ Nenhum link interno (`href`) quebrado entre as páginas
-- ✅ Nenhum `<script src>` apontando pra arquivo inexistente
-- ✅ Todo arquivo listado no cache do Service Worker existe de verdade no projeto
-- ✅ Todas as 8 coleções do Firestore em uso batem com as regras já publicadas (`users`, `subjects`, `topics`, `questions`, `answers`, `topicProgress`, `vocabulary`, `vocabularyProgress`)
-- ✅ Sintaxe de todo arquivo `.js` e balanceamento de tags de todo `.html` validados
+## Correção incluída
+- Login: adicionada uma logo de verdade (ícone do app + nome + tagline) acima das abas de Entrar/Criar conta
 
-## Checklist de teste manual (faça isso antes do Passo 12)
-1. **Instalar o PWA**: no celular, abra o site → menu do navegador → "Adicionar à tela inicial" → confirme que agora aparece o ícone "OM" (antes não aparecia nenhum).
-2. **Fluxo completo**: cadastro → login → Dashboard → Matérias → adicionar uma matéria → treinar → Progresso → Technical English → Simulado → Perfil → Sair → Login de novo.
-3. **Offline**: com o app já aberto uma vez, ative o modo avião e navegue entre as páginas já visitadas — devem continuar abrindo (mesmo sem conseguir buscar dado novo do Firestore).
-4. **Idioma**: troque PT/EN no menu e confira se todas as telas trocam (não só o dashboard).
+## Neste passo — Integração com IA
+- **Botão "✨ Gerar conteúdo com IA"** na tela de cada matéria
+- Modal de configuração: tipo de conteúdo (assuntos/exercícios/desafios/vocabulário), quantidade (10/20/50), dificuldade, idioma
+- **Backend seguro** (Cloud Function `generateContent`): a única parte do app que fala com a OpenAI — a API key nunca chega no navegador, fica guardada como secret do Firebase
+- **Revisão obrigatória antes de salvar**: o conteúdo gerado aparece numa lista com checkbox (selecionar), 🗑️ (excluir) por item — nada é gravado sem você confirmar
+- Conteúdo salvo usa exatamente as mesmas coleções do Firestore que conteúdo manual (`subjects`, `topics`, `questions`, `vocabulary`) mais uma nova (`challenges`) — nenhum sistema separado pra IA
+- Assim que salvo, o conteúdo já aparece em Matérias, Treino, Progresso e Technical English normalmente
+- Tratamento de erro: sem internet, IA fora do ar, JSON inválido, limite de uso — sempre com mensagem clara, nunca trava o app
+
+## ⚠️ Este passo tem uma parte fora do código
+Diferente dos outros passos, este exige rodar comandos no computador
+pra publicar a Cloud Function. **Siga o arquivo `README-DEPLOY-IA.md`**
+(vem junto neste zip) do início ao fim — sem isso, o botão de IA não
+funciona.
+
+## ⚠️ Ação necessária no Firebase (regras do Firestore)
+Adicione mais esta regra, dentro do bloco `documents { ... }`:
+```
+match /challenges/{document=**} {
+  allow read, write: if request.auth != null;
+}
+```
 
 ## Próximos passos
-Terminada a base — o próximo é o **Passo 12: integração com IA** (geração de conteúdo com backend seguro).
+Com isso, todas as 12 etapas do roteiro original estão implementadas.
+Qualquer ajuste fino ou funcionalidade nova a partir daqui é sob
+demanda — é só pedir.
+
 
 
 

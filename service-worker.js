@@ -1,4 +1,4 @@
-const CACHE = "openmind-v16";
+const CACHE = "openmind-v17";
 
 const ASSETS = [
     "index.html",
@@ -15,6 +15,9 @@ const ASSETS = [
     "js/data/openmind-vocabulary.js",
     "js/questions-service.js",
     "js/vocabulary-service.js",
+    "js/challenges-service.js",
+    "js/ai-service.js",
+    "js/ai-modal.js",
     "js/training.js",
     "js/simulator.js",
     "js/language.js",
