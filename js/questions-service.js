@@ -80,6 +80,10 @@ function OPENMIND_registrarResposta(uid, dados) {
     }).catch(function (erro) { console.error("Erro ao registrar resposta:", erro); });
 }
 
+function OPENMIND_adicionarExercicio(dados) {
+    return OPENMIND_DB.collection(OPENMIND_COLECAO_EXERCICIOS).add(dados);
+}
+
 function OPENMIND_embaralhar(lista) {
     for (let i = lista.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));

@@ -11,4 +11,9 @@ if (!window.OPENMIND_FIREBASE_CONFIG) {
     firebase.initializeApp(window.OPENMIND_FIREBASE_CONFIG);
     window.OPENMIND_AUTH = firebase.auth();
     window.OPENMIND_DB = firebase.firestore();
+    // Só existe se a página também carregou o SDK firebase-functions-compat
+    // (nem toda página precisa — só as que usam IA).
+    if (typeof firebase.functions === "function") {
+        window.OPENMIND_FUNCTIONS = firebase.functions();
+    }
 }

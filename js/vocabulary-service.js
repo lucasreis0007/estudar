@@ -19,6 +19,10 @@ function OPENMIND_garantirVocabularioSemeado() {
     });
 }
 
+function OPENMIND_adicionarPalavraVocabulario(dados) {
+    return OPENMIND_DB.collection(OPENMIND_COLECAO_VOCABULARIO).add(dados);
+}
+
 function OPENMIND_listarVocabulario() {
     return OPENMIND_DB.collection(OPENMIND_COLECAO_VOCABULARIO).get().then(function (snap) {
         return snap.docs
