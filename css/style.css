@@ -62,3 +62,43 @@
 .conquista-card.bloqueada{opacity:.35;filter:grayscale(1)}
 .conquista-icone{font-size:24px}
 .conquista-card small{font-size:11px;color:#374151;line-height:1.3}
+.topbar-login{background:transparent;box-shadow:none;justify-content:flex-end}
+.auth-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:18px}
+.auth-logo{width:72px;height:72px;border-radius:20px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.auth-logo-nome{font-size:22px;font-weight:800;color:#111827;margin-top:6px}
+.auth-logo-tagline{font-size:12px;color:#6b7280}
+
+/* ---------------- BOTÃO E MODAL DE IA ---------------- */
+
+.botao-ia{width:100%;margin-top:10px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;border-radius:12px;padding:12px;font-size:12px;font-weight:800;cursor:pointer}
+.botao-ia:hover{opacity:.92}
+
+.overlay-ia{position:fixed;inset:0;background:rgba(17,24,39,.6);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+@media(min-width:700px){.overlay-ia{align-items:center}}
+
+.modal-ia{background:#fff;border-radius:22px 22px 0 0;padding:20px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto}
+@media(min-width:700px){.modal-ia{border-radius:22px}}
+
+.modal-ia-topo{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.modal-ia-topo h2{font-size:17px;margin:0}
+.fechar-modal-ia{border:none;background:#f1f5f9;color:#374151;width:32px;height:32px;border-radius:10px;font-size:14px;cursor:pointer}
+
+.modal-ia-rotulo{font-size:12px;font-weight:700;color:#374151;margin:16px 0 8px}
+
+.checkbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.checkbox-ia{display:flex;align-items:center;gap:8px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:9px 10px;font-size:12px;cursor:pointer}
+.checkbox-ia input{width:16px;height:16px;flex-shrink:0}
+
+.opcoes-pill{display:flex;gap:8px;flex-wrap:wrap}
+.pill-opcao{border:1px solid #d1d5db;background:#fff;color:#374151;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer}
+.pill-opcao.ativo{background:#111827;color:#fff;border-color:#111827}
+
+.ia-carregando-titulo{font-size:17px;font-weight:800;text-align:center;margin:30px 0 8px}
+.ia-carregando-passo{text-align:center;color:#6b7280;font-size:13px;margin-bottom:30px}
+
+.ia-secao-revisao{margin-bottom:16px}
+.ia-secao-revisao h3{font-size:13px;color:#111827;margin:0 0 8px}
+.ia-secao-revisao h3 small{color:#9ca3af;font-weight:400}
+.ia-item-revisao{display:flex;align-items:center;gap:10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:9px 10px;margin-bottom:6px}
+.ia-item-texto{flex:1;font-size:12px;color:#111827;line-height:1.4}
+.ia-item-excluir{border:none;background:transparent;cursor:pointer;font-size:14px;flex-shrink:0}
