@@ -21,7 +21,72 @@
       <h1 id="name">Matéria</h1>
       <p id="desc">Basic · Intermediate · Advanced</p>
       <a id="btnTreinar" class="primary-btn" href="training.html">🎯 TREINAR ESTA MATÉRIA</a>
+      <button id="btnAbrirModalIA" class="botao-ia" data-i18n="generateWithAI">✨ GERAR CONTEÚDO COM IA</button>
     </section>
+
+    <!-- ---------------- MODAL: CONFIGURAÇÃO DA GERAÇÃO ---------------- -->
+    <div id="overlayIA" class="overlay-ia oculto-auth">
+      <div class="modal-ia">
+
+        <!-- Tela 1: configuração -->
+        <div id="iaTelaConfig">
+          <div class="modal-ia-topo">
+            <h2 data-i18n="generateContent">✨ Gerar conteúdo</h2>
+            <button type="button" id="btnFecharModalIA" class="fechar-modal-ia">✕</button>
+          </div>
+
+          <p class="modal-ia-rotulo" data-i18n="whatToGenerate">O que deseja gerar?</p>
+          <div class="checkbox-grid">
+            <label class="checkbox-ia"><input type="checkbox" value="topics" checked><span data-i18n="typeTopics">Assuntos</span></label>
+            <label class="checkbox-ia"><input type="checkbox" value="questions" checked><span data-i18n="typeQuestions">Exercícios</span></label>
+            <label class="checkbox-ia"><input type="checkbox" value="challenges"><span data-i18n="typeChallenges">Desafios práticos</span></label>
+            <label class="checkbox-ia"><input type="checkbox" value="vocabulary"><span data-i18n="typeVocabulary">Vocabulário técnico</span></label>
+          </div>
+
+          <p class="modal-ia-rotulo" data-i18n="quantityLabel">Quantidade</p>
+          <div class="opcoes-pill" id="opcoesQuantidade">
+            <button type="button" data-valor="10" class="pill-opcao">10</button>
+            <button type="button" data-valor="20" class="pill-opcao ativo">20</button>
+            <button type="button" data-valor="50" class="pill-opcao">50</button>
+          </div>
+
+          <p class="modal-ia-rotulo" data-i18n="difficultyLabel">Dificuldade</p>
+          <div class="opcoes-pill" id="opcoesDificuldade">
+            <button type="button" data-valor="basic" class="pill-opcao">🟢</button>
+            <button type="button" data-valor="intermediate" class="pill-opcao">🟡</button>
+            <button type="button" data-valor="advanced" class="pill-opcao">🔴</button>
+            <button type="button" data-valor="mixed" class="pill-opcao ativo">🔄</button>
+          </div>
+
+          <p class="modal-ia-rotulo" data-i18n="languageLabel">Idioma</p>
+          <div class="opcoes-pill" id="opcoesIdioma">
+            <button type="button" data-valor="pt" class="pill-opcao ativo">🇧🇷 PT</button>
+            <button type="button" data-valor="en" class="pill-opcao">🇺🇸 EN</button>
+            <button type="button" data-valor="mixed" class="pill-opcao">🌎 Mixed</button>
+          </div>
+
+          <p class="erro-auth" id="erroIA"></p>
+          <button id="btnGerarConteudo" class="primary-btn-full" data-i18n="generateButton">✨ GERAR CONTEÚDO</button>
+        </div>
+
+        <!-- Tela 2: carregando -->
+        <div id="iaTelaCarregando" class="oculto-auth">
+          <p class="ia-carregando-titulo" data-i18n="creatingContent">✨ Criando seu conteúdo...</p>
+          <p class="ia-carregando-passo" id="iaPassoAtual">Analisando a matéria...</p>
+        </div>
+
+        <!-- Tela 3: revisão -->
+        <div id="iaTelaRevisao" class="oculto-auth">
+          <div class="modal-ia-topo">
+            <h2 data-i18n="contentGenerated">✓ Conteúdo gerado!</h2>
+            <button type="button" id="btnFecharModalIARevisao" class="fechar-modal-ia">✕</button>
+          </div>
+          <div id="iaRevisaoConteudo"></div>
+          <button id="btnSalvarSelecionados" class="primary-btn-full" data-i18n="saveSelected">✓ SALVAR SELECIONADOS</button>
+        </div>
+
+      </div>
+    </div>
 
     <section class="section">
       <h2 data-i18n="topics">Assuntos</h2>
@@ -69,13 +134,21 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-functions-compat.js"></script>
 <script src="../js/firebase-config.js"></script>
 <script src="../js/firebase-init.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../js/openmind-data.js"></script>
 <script src="../js/subjects-service.js"></script>
 <script src="../js/adaptive-service.js"></script>
+<script src="../js/data/openmind-questions.js"></script>
+<script src="../js/questions-service.js"></script>
+<script src="../js/data/openmind-vocabulary.js"></script>
+<script src="../js/vocabulary-service.js"></script>
+<script src="../js/challenges-service.js"></script>
+<script src="../js/ai-service.js"></script>
 <script src="../js/language.js"></script>
+<script src="../js/ai-modal.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
